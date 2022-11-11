@@ -23,6 +23,9 @@ impl SRTFrameReceiver {
     pub async fn new(server_address: &str, latency: Duration) -> Self {
         info!("Connecting...");
         let socket = SrtSocket::builder()
+            .set(|options| {
+                options.connect.timeout = Duration::from_secs(30);
+            })
             .latency(latency)
             .call(server_address, None)
             .await

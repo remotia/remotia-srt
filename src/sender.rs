@@ -28,6 +28,7 @@ impl SRTFrameSender {
             .set(|options| {
                 options.sender.buffer_size = ByteCount(1024 * 1024 * 8); // 32 MB for internal buffering
                 options.sender.max_payload_size = PacketSize(1024 * 1024 * 8);
+                options.connect.timeout = Duration::from_secs(30);
             })
             .latency(latency)
             .listen_on(port)
