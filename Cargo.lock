@@ -1226,7 +1226,7 @@ checksum = "f497285884f3fcff424ffc933e56d7cbca511def0c9831a7f9b5f6153e3cc89b"
 [[package]]
 name = "remotia"
 version = "0.1.0"
-source = "git+https://github.com/remotia/remotia?branch=master#c99b40ef5826187d57c28a4f922fb6ee7c975321"
+source = "git+https://github.com/remotia/remotia?branch=rework_tweaks#fdf2cf770a8ae13fc510a3c7e0e0649b770032af"
 dependencies = [
  "remotia-buffer-utils",
  "remotia-core",
@@ -1240,7 +1240,7 @@ dependencies = [
 [[package]]
 name = "remotia-buffer-utils"
 version = "0.1.0"
-source = "git+https://github.com/remotia/remotia?branch=master#c99b40ef5826187d57c28a4f922fb6ee7c975321"
+source = "git+https://github.com/remotia/remotia?branch=rework_tweaks#fdf2cf770a8ae13fc510a3c7e0e0649b770032af"
 dependencies = [
  "async-trait",
  "bytes",
@@ -1252,7 +1252,7 @@ dependencies = [
 [[package]]
 name = "remotia-core"
 version = "0.1.0"
-source = "git+https://github.com/remotia/remotia?branch=master#c99b40ef5826187d57c28a4f922fb6ee7c975321"
+source = "git+https://github.com/remotia/remotia?branch=rework_tweaks#fdf2cf770a8ae13fc510a3c7e0e0649b770032af"
 dependencies = [
  "async-trait",
  "bincode",
@@ -1279,7 +1279,7 @@ dependencies = [
 [[package]]
 name = "remotia-core-capturers"
 version = "0.1.0"
-source = "git+https://github.com/remotia/remotia?branch=master#c99b40ef5826187d57c28a4f922fb6ee7c975321"
+source = "git+https://github.com/remotia/remotia?branch=rework_tweaks#fdf2cf770a8ae13fc510a3c7e0e0649b770032af"
 dependencies = [
  "async-trait",
  "bytes",
@@ -1292,7 +1292,7 @@ dependencies = [
 [[package]]
 name = "remotia-core-codecs"
 version = "0.1.0"
-source = "git+https://github.com/remotia/remotia?branch=master#c99b40ef5826187d57c28a4f922fb6ee7c975321"
+source = "git+https://github.com/remotia/remotia?branch=rework_tweaks#fdf2cf770a8ae13fc510a3c7e0e0649b770032af"
 dependencies = [
  "async-trait",
  "bytes",
@@ -1306,7 +1306,7 @@ dependencies = [
 [[package]]
 name = "remotia-core-loggers"
 version = "0.1.0"
-source = "git+https://github.com/remotia/remotia?branch=master#c99b40ef5826187d57c28a4f922fb6ee7c975321"
+source = "git+https://github.com/remotia/remotia?branch=rework_tweaks#fdf2cf770a8ae13fc510a3c7e0e0649b770032af"
 dependencies = [
  "async-trait",
  "bytes",
@@ -1319,7 +1319,7 @@ dependencies = [
 [[package]]
 name = "remotia-core-renderers"
 version = "0.1.0"
-source = "git+https://github.com/remotia/remotia?branch=master#c99b40ef5826187d57c28a4f922fb6ee7c975321"
+source = "git+https://github.com/remotia/remotia?branch=rework_tweaks#fdf2cf770a8ae13fc510a3c7e0e0649b770032af"
 dependencies = [
  "async-trait",
  "beryllium",
@@ -1334,7 +1334,7 @@ dependencies = [
 [[package]]
 name = "remotia-profilation-utils"
 version = "0.1.0"
-source = "git+https://github.com/remotia/remotia?branch=master#c99b40ef5826187d57c28a4f922fb6ee7c975321"
+source = "git+https://github.com/remotia/remotia?branch=rework_tweaks#fdf2cf770a8ae13fc510a3c7e0e0649b770032af"
 dependencies = [
  "async-trait",
  "bytes",
