@@ -2,7 +2,7 @@ use std::time::{Duration, Instant};
 
 use async_trait::async_trait;
 
-use bytes::BytesMut;
+use bytes::{BytesMut, Bytes};
 use futures::SinkExt;
 
 use log::info;
@@ -18,19 +18,8 @@ pub struct SRTFrameSender<K> {
 }
 
 impl<K> SRTFrameSender<K> {
-    pub async fn new(buffer_key: K, port: u16, latency: Duration) -> Self {
+    pub async fn new(buffer_key: K, socket: SrtSocket) -> Self {
         info!("Listening...");
-        let socket = SrtSocket::builder()
-            .set(|options| {
-                options.sender.buffer_size = ByteCount(1024 * 1024 * 8); // 32 MB for internal buffering
-                options.sender.max_payload_size = PacketSize(1024 * 1024 * 8);
-                options.connect.timeout = Duration::from_secs(30);
-            })
-            .latency(latency)
-            .listen_on(port)
-            .await
-            .unwrap();
-
         info!("Connected");
 
         Self { buffer_key, socket }
