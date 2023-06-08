@@ -1,28 +1,24 @@
-use std::time::{Instant, Duration};
+use std::time::{Duration, Instant};
 
 use async_trait::async_trait;
 
-use bytes::{Bytes};
+use bytes::BytesMut;
 use futures::SinkExt;
 
-use log::{debug, info};
-use remotia::{
-    traits::FrameProcessor,
-    types::FrameData,
-};
+use log::info;
+use remotia::traits::{BorrowableFrameProperties, FrameProcessor};
 use srt_tokio::{
     options::{ByteCount, PacketSize},
     SrtSocket,
 };
 
-use crate::SRTFrameData;
-
-pub struct SRTFrameSender {
+pub struct SRTFrameSender<K> {
+    buffer_key: K,
     socket: SrtSocket,
 }
 
-impl SRTFrameSender {
-    pub async fn new(port: u16, latency: Duration) -> Self {
+impl<K> SRTFrameSender<K> {
+    pub async fn new(buffer_key: K, port: u16, latency: Duration) -> Self {
         info!("Listening...");
         let socket = SrtSocket::builder()
             .set(|options| {
@@ -37,27 +33,25 @@ impl SRTFrameSender {
 
         info!("Connected");
 
-        Self { socket }
-    }
-
-    async fn send_frame_data(&mut self, frame_data: &mut FrameData) {
-        // Create the network DTO
-        let srt_frame_data = SRTFrameData::from_frame_data(frame_data);
-
-        debug!("Sending frame body...");
-        let binarized_obj = Bytes::from(bincode::serialize(&srt_frame_data).unwrap());
-
-        self.socket
-            .send((Instant::now(), binarized_obj))
-            .await
-            .unwrap();
+        Self { buffer_key, socket }
     }
 }
 
 #[async_trait]
-impl FrameProcessor for SRTFrameSender {
-    async fn process(&mut self, mut frame_data: FrameData) -> Option<FrameData> {
-        self.send_frame_data(&mut frame_data).await;
+impl<F, K> FrameProcessor<F> for SRTFrameSender<K>
+where
+    K: Send,
+    F: BorrowableFrameProperties<K, BytesMut> + Send + 'static,
+{
+    async fn process(&mut self, frame_data: F) -> Option<F> {
+        let buffer = frame_data
+            .get_ref(&self.buffer_key)
+            .unwrap()
+            .clone()
+            .freeze();
+
+        self.socket.send((Instant::now(), buffer)).await.unwrap();
+
         Some(frame_data)
     }
 }
