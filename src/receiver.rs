@@ -1,8 +1,6 @@
-use std::time::Duration;
-
 use async_trait::async_trait;
 use bytes::BytesMut;
-use remotia::traits::{BorrowableFrameProperties, FrameProcessor};
+use remotia::traits::{FrameProcessor, BorrowMutFrameProperties};
 
 use futures::TryStreamExt;
 use srt_tokio::SrtSocket;
@@ -23,7 +21,7 @@ impl<K> SRTFrameReceiver<K> {
 impl<F, K> FrameProcessor<F> for SRTFrameReceiver<K>
 where
     K: Send,
-    F: BorrowableFrameProperties<K, BytesMut> + Send + 'static,
+    F: BorrowMutFrameProperties<K, BytesMut> + Send + 'static,
 {
     async fn process(&mut self, mut frame_data: F) -> Option<F> {
         let (_, received_buffer) = match self.socket.try_next().await {

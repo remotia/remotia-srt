@@ -1,16 +1,13 @@
-use std::time::{Duration, Instant};
+use std::time::Instant;
 
 use async_trait::async_trait;
 
-use bytes::{BytesMut, Bytes};
+use bytes::BytesMut;
 use futures::SinkExt;
 
 use log::info;
-use remotia::traits::{BorrowableFrameProperties, FrameProcessor};
-use srt_tokio::{
-    options::{ByteCount, PacketSize},
-    SrtSocket,
-};
+use remotia::traits::{BorrowFrameProperties, FrameProcessor};
+use srt_tokio::SrtSocket;
 
 pub struct SRTFrameSender<K> {
     buffer_key: K,
@@ -30,7 +27,7 @@ impl<K> SRTFrameSender<K> {
 impl<F, K> FrameProcessor<F> for SRTFrameSender<K>
 where
     K: Send,
-    F: BorrowableFrameProperties<K, BytesMut> + Send + 'static,
+    F: BorrowFrameProperties<K, BytesMut> + Send + 'static,
 {
     async fn process(&mut self, frame_data: F) -> Option<F> {
         let buffer = frame_data
