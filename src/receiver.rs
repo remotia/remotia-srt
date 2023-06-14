@@ -1,6 +1,5 @@
 use async_trait::async_trait;
-use bytes::BytesMut;
-use remotia::traits::{FrameProcessor, BorrowMutFrameProperties};
+use remotia::{traits::{FrameProcessor, BorrowMutFrameProperties}, buffers::{BytesMut, BufMut}};
 
 use futures::TryStreamExt;
 use srt_tokio::SrtSocket;
@@ -11,7 +10,7 @@ pub struct SRTFrameReceiver<K> {
 }
 
 impl<K> SRTFrameReceiver<K> {
-    pub async fn new(buffer_key: K, socket: SrtSocket) -> Self {
+    pub fn new(buffer_key: K, socket: SrtSocket) -> Self {
         Self { buffer_key, socket }
     }
 }
@@ -35,7 +34,7 @@ where
         frame_data
             .get_mut_ref(&self.buffer_key)
             .unwrap()
-            .copy_from_slice(&received_buffer);
+            .put(received_buffer);
 
         Some(frame_data)
     }

@@ -2,11 +2,9 @@ use std::time::Instant;
 
 use async_trait::async_trait;
 
-use bytes::BytesMut;
 use futures::SinkExt;
 
-use log::info;
-use remotia::traits::{BorrowFrameProperties, FrameProcessor};
+use remotia::{traits::{BorrowFrameProperties, FrameProcessor}, buffers::BytesMut};
 use srt_tokio::SrtSocket;
 
 pub struct SRTFrameSender<K> {
@@ -15,10 +13,7 @@ pub struct SRTFrameSender<K> {
 }
 
 impl<K> SRTFrameSender<K> {
-    pub async fn new(buffer_key: K, socket: SrtSocket) -> Self {
-        info!("Listening...");
-        info!("Connected");
-
+    pub fn new(buffer_key: K, socket: SrtSocket) -> Self {
         Self { buffer_key, socket }
     }
 }
