@@ -2,8 +2,6 @@ use std::time::Instant;
 
 use async_trait::async_trait;
 
-use futures::SinkExt;
-
 use remotia::{traits::{BorrowFrameProperties, FrameProcessor}, buffers::BytesMut};
 use srt_tokio::SrtSocket;
 
@@ -31,7 +29,8 @@ where
             .clone()
             .freeze();
 
-        self.socket.send((Instant::now(), buffer)).await.unwrap();
+        log::trace!("Sending {} bytes...", buffer.len());
+        self.socket.try_send(Instant::now(), buffer).unwrap();
 
         Some(frame_data)
     }
