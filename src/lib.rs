@@ -1,11 +1,15 @@
-use std::collections::HashMap;
-
-use remotia::types::FrameData;
-use serde::{Deserialize, Serialize};
+use bytes::Bytes;
 
 pub mod receiver;
-pub mod sender;
+// pub mod sender;
 
+pub trait SRTTransmission {
+    fn report_receive_error(&mut self, error: std::io::Error);
+    fn report_reception_delay(&mut self, value: u128);
+    fn deserialize_packet(&mut self, data: &Bytes);
+}
+
+/*
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
 pub(crate) struct SRTFrameData {
     encoded_frame_buffer: Vec<u8>,
@@ -39,3 +43,4 @@ impl SRTFrameData {
         encoded_frame_buffer[..encoded_size].copy_from_slice(&self.encoded_frame_buffer)
     }
 }
+*/
