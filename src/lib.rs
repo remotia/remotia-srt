@@ -1,12 +1,13 @@
 use bytes::Bytes;
 
 pub mod receiver;
-// pub mod sender;
+pub mod sender;
 
 pub trait SRTTransmission {
     fn report_receive_error(&mut self, error: std::io::Error);
     fn report_reception_delay(&mut self, value: u128);
     fn deserialize_packet(&mut self, data: &Bytes);
+    fn serialize_packet(&self) -> Bytes;
 }
 
 /*
