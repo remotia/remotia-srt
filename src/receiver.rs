@@ -34,6 +34,7 @@ where
         let receive_result = self.receive_binarized().await;
 
         if let Err(error) = receive_result {
+            log::debug!("Error on receive: {:?}", error);
             frame_data.report_receive_error(error);
             return Some(frame_data);
         }
@@ -42,6 +43,12 @@ where
         let (transmission_instant, binarized_obj) = receive_result
             .expect("Unexpected error")
             .expect("Unexpected None receive result");
+
+        log::debug!(
+            "Received a packet of {} bytes at instant {:?}",
+            binarized_obj.len(),
+            transmission_instant
+        );
 
         frame_data.report_reception_delay(transmission_instant.elapsed().as_millis());
         frame_data.deserialize_packet(&binarized_obj);
