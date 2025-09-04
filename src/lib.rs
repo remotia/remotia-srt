@@ -3,6 +3,8 @@ use bytes::Bytes;
 pub mod receiver;
 pub mod sender;
 
+pub use srt_tokio::*;
+
 pub trait SRTTransmission {
     fn report_receive_error(&mut self, error: std::io::Error);
     fn report_reception_delay(&mut self, value: u128);

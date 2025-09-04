@@ -1,4 +1,4 @@
-use std::time::{Duration, Instant};
+use std::time::{Instant};
 
 use async_trait::async_trait;
 
@@ -6,7 +6,6 @@ use futures::SinkExt;
 
 use remotia::traits::FrameProcessor;
 use srt_tokio::{
-    options::{ByteCount, PacketSize},
     SrtSocket,
 };
 
@@ -17,20 +16,7 @@ pub struct SRTFrameSender {
 }
 
 impl SRTFrameSender {
-    pub async fn new(port: u16, latency: Duration) -> Self {
-        log::info!("Listening...");
-        let socket = SrtSocket::builder()
-            .set(|options| {
-                options.sender.buffer_size = ByteCount(1024 * 1024 * 32); // 32 MB for internal buffering
-                options.sender.max_payload_size = PacketSize(1024 * 1024 * 32);
-            })
-            .latency(latency)
-            .listen_on(port)
-            .await
-            .unwrap();
-
-        log::info!("Connected");
-
+    pub fn from_socket(socket: SrtSocket) -> Self {
         Self { socket }
     }
 }

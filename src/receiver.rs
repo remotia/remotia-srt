@@ -1,11 +1,10 @@
-use std::time::{Duration, Instant};
+use std::time::Instant;
 
 use async_trait::async_trait;
 use bytes::Bytes;
 use remotia::traits::FrameProcessor;
 
 use futures::TryStreamExt;
-use log::{debug, info};
 use srt_tokio::SrtSocket;
 
 use crate::SRTTransmission;
@@ -15,16 +14,7 @@ pub struct SRTFrameReceiver {
 }
 
 impl SRTFrameReceiver {
-    pub async fn new(server_address: &str, latency: Duration) -> Self {
-        info!("Connecting...");
-        let socket = SrtSocket::builder()
-            .latency(latency)
-            .call(server_address, None)
-            .await
-            .unwrap();
-
-        info!("Connected");
-
+    pub fn from_socket(socket: SrtSocket) -> Self {
         Self { socket }
     }
 
@@ -39,7 +29,7 @@ where
     F: SRTTransmission + Send + 'static,
 {
     async fn process(&mut self, mut frame_data: F) -> Option<F> {
-        debug!("Receiving binarized frame DTO...");
+        log::debug!("Receiving binarized frame DTO...");
 
         let receive_result = self.receive_binarized().await;
 
